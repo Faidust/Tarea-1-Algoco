@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <chrono>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -19,6 +20,18 @@ void mergeSort(vector<int>& arr, int left, int right);
 // Función implementada en sort.cpp
 vector<int> sortArray(vector<int>& arr);
 
+// Esta funcion es para guardar los tiempos de cada algoritmo en un archivo csv
+void guardarTiempo(const string& archivoEntrada, const string& algoritmo, int n, double tiempo)
+{
+    ofstream archivo("data/measurements/sorting_measurements.csv", ios::app);
+
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir archivo de mediciones." << endl;
+        return;
+    }
+
+    archivo << archivoEntrada << "," << algoritmo << "," << n << "," << tiempo << "\n";
+}
 
 // Lee todos los números de un archivo y los guarda en un vector
 vector<int> leerArreglo(const string& nombreArchivo)
@@ -78,9 +91,18 @@ void procesarArchivo(const string& ruta)
 
     vector<int> arrPatience = arr;
 
+    auto inicioPatience = chrono::high_resolution_clock::now();
+
     vector<int> resultadoPatience = patienceSort(arrPatience);
 
-    cout << "Patience Sort terminado." << endl;
+    auto finPatience = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> tiempoPatience =
+        finPatience - inicioPatience;
+
+    cout << "Patience Sort: " << tiempoPatience.count() << " segundos" << endl;
+
+    guardarTiempo(fs::path(ruta).filename().string(), "PatienceSort", arr.size(), tiempoPatience.count());
 
 
     // ------------------------------------
@@ -89,10 +111,17 @@ void procesarArchivo(const string& ruta)
 
     vector<int> arrQuick = arr;
 
+    auto inicioQuick = chrono::high_resolution_clock::now();
+
     quickSort(arrQuick, 0, arrQuick.size() - 1);
 
-    cout << "Quick Sort terminado." << endl;
+    auto finQuick = chrono::high_resolution_clock::now();
 
+    chrono::duration<double> tiempoQuick = finQuick - inicioQuick;
+
+    cout << "Quick Sort: " << tiempoQuick.count() << " segundos" << endl;
+
+    guardarTiempo(fs::path(ruta).filename().string(), "QuickSort", arr.size(), tiempoQuick.count());
 
     // ------------------------------------
     // MERGE SORT
@@ -100,9 +129,17 @@ void procesarArchivo(const string& ruta)
 
     vector<int> arrMerge = arr;
 
+    auto inicioMerge = chrono::high_resolution_clock::now();
+
     mergeSort(arrMerge, 0, arrMerge.size() - 1);
 
-    cout << "Merge Sort terminado." << endl;
+    auto finMerge = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> tiempoMerge = finMerge - inicioMerge;
+
+    cout << "Merge Sort: " << tiempoMerge.count() << " segundos" << endl;
+
+    guardarTiempo(fs::path(ruta).filename().string(), "MergeSort", arr.size(), tiempoMerge.count());
 
 
     // ------------------------------------
@@ -111,9 +148,17 @@ void procesarArchivo(const string& ruta)
 
     vector<int> arrSort = arr;
 
+    auto inicioSort = chrono::high_resolution_clock::now();
+
     vector<int> resultadoSort = sortArray(arrSort);
 
-    cout << "std::sort terminado." << endl;
+    auto finSort = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> tiempoSort = finSort - inicioSort;
+
+    cout << "std::sort: " << tiempoSort.count() << " segundos" << endl;
+
+    guardarTiempo(fs::path(ruta).filename().string(), "Sort", arr.size(), tiempoSort.count());
 
 
     // ------------------------------------
@@ -138,6 +183,12 @@ void procesarArchivo(const string& ruta)
 int main()
 {
     string carpetaEntrada = "data/array_input";
+
+    ofstream archivoMediciones("data/measurements/sorting_measurements.csv");
+
+    archivoMediciones << "archivo,algoritmo,n,tiempo\n";
+
+    archivoMediciones.close();
 
     if (!fs::exists(carpetaEntrada)) {
         cerr << "No existe la carpeta: " << carpetaEntrada << endl;
