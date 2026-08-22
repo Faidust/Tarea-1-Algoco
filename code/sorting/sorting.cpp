@@ -2,8 +2,10 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <filesystem>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 // Función implementada en patiencesort.cpp
 vector<int> patienceSort(vector<int> arr);
@@ -51,37 +53,35 @@ void mostrarArreglo(const vector<int>& arr)
     cout << endl;
 }
 
+// ------------------------------------
+// PROCESAR UN CASO DE PRUEBA
+// ------------------------------------
 
-int main(int argc, char* argv[])
+void procesarArchivo(const string& ruta)
 {
-    // Verifica que hayas indicado un archivo
-    if (argc < 2) {
-        cerr << "Uso: ./sorting <archivo_de_entrada>" << endl;
-        return 1;
-    }
-
-    string nombreArchivo = argv[1];
-
-    // Leer arreglo desde uno de los casos de prueba de la tarea
-    vector<int> arr = leerArreglo(nombreArchivo);
+    vector<int> arr = leerArreglo(ruta);
 
     if (arr.empty()) {
-        cerr << "El arreglo esta vacio o hubo un error al leerlo." << endl;
-        return 1;
+        cerr << "No se pudo procesar: " << ruta << endl;
+        return;
     }
 
-    cout << "Arreglo original:" << endl;
-    mostrarArreglo(arr);
+    cout << "\n========================================" << endl;
+    cout << "Archivo: " << fs::path(ruta).filename().string() << endl;
+    cout << "Cantidad de elementos: " << arr.size() << endl;
+    cout << "========================================" << endl;
+
 
     // ------------------------------------
     // PATIENCE SORT
     // ------------------------------------
 
-    // Ejecutar Patience Sort
-    vector<int> resultado = patienceSort(arr);
+    vector<int> arrPatience = arr;
 
-    cout << "\nArreglo ordenado con Patience Sort:" << endl;
-    mostrarArreglo(resultado);
+    vector<int> resultadoPatience = patienceSort(arrPatience);
+
+    cout << "Patience Sort terminado." << endl;
+
 
     // ------------------------------------
     // QUICK SORT
@@ -91,8 +91,8 @@ int main(int argc, char* argv[])
 
     quickSort(arrQuick, 0, arrQuick.size() - 1);
 
-    cout << "\nArreglo ordenado con Quick Sort:" << endl;
-    mostrarArreglo(arrQuick);
+    cout << "Quick Sort terminado." << endl;
+
 
     // ------------------------------------
     // MERGE SORT
@@ -102,8 +102,8 @@ int main(int argc, char* argv[])
 
     mergeSort(arrMerge, 0, arrMerge.size() - 1);
 
-    cout << "\nArreglo ordenado con Merge Sort:" << endl;
-    mostrarArreglo(arrMerge);
+    cout << "Merge Sort terminado." << endl;
+
 
     // ------------------------------------
     // STD::SORT
@@ -113,9 +113,43 @@ int main(int argc, char* argv[])
 
     vector<int> resultadoSort = sortArray(arrSort);
 
-    cout << "\nArreglo ordenado con Sort:" << endl;
-    mostrarArreglo(resultadoSort);
+    cout << "std::sort terminado." << endl;
 
+
+    // ------------------------------------
+    // COMPROBAR RESULTADOS
+    // ------------------------------------
+
+    if (resultadoPatience == arrQuick &&
+        arrQuick == arrMerge &&
+        arrMerge == resultadoSort) {
+
+        cout << "Todos los algoritmos dieron el mismo resultado." << endl;
+    }
+    else {
+        cout << "ERROR: Los algoritmos dieron resultados diferentes." << endl;
+    }
+}
+
+// ------------------------------------
+// MAIN
+// ------------------------------------
+
+int main()
+{
+    string carpetaEntrada = "data/array_input";
+
+    if (!fs::exists(carpetaEntrada)) {
+        cerr << "No existe la carpeta: " << carpetaEntrada << endl;
+        return 1;
+    }
+
+    for (const auto& archivo : fs::directory_iterator(carpetaEntrada)) {
+
+        if (archivo.path().extension() == ".txt") {
+            procesarArchivo(archivo.path().string());
+        }
+    }
 
     return 0;
 }
