@@ -6,10 +6,7 @@ using namespace std;
 // Agrega aquí la URL exacta de donde obtuviste la implementación
 // de multiplicación de matrices Naive.
 
-vector<vector<int>> naiveMultiply(
-    const vector<vector<int>>& A,
-    const vector<vector<int>>& B
-)
+vector<vector<int>> naiveMultiply(const vector<vector<int>>& A, const vector<vector<int>>& B)
 {
     int n = A.size();
 
