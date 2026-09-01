@@ -48,13 +48,32 @@ int obtenerDimension(const string& nombreArchivo)
     return stoi(numero);
 }
 
+// Guardar una medicion en el CSV
+void guardarTiempo(const string& archivoEntrada, const string& algoritmo, int n, double tiempo)
+{
+    ofstream archivo("data/measurements/matrix_measurements.csv", ios::app);
+
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo de mediciones." << endl;
+        return;
+    }
+
+    archivo << archivoEntrada << ","
+            << algoritmo << ","
+            << n << ","
+            << tiempo << "\n";
+
+    archivo.close();
+}
+
 
 // Procesar un par de matrices
 void procesarMatrices(const string& ruta1, const string& ruta2)
 {
-    string nombreArchivo = fs::path(ruta1).filename().string();
+    string nombre1 = fs::path(ruta1).filename().string();
+    string nombre2 = fs::path(ruta2).filename().string();
 
-    int n = obtenerDimension(nombreArchivo);
+    int n = obtenerDimension(nombre1);
 
     // Leer las dos matrices
     vector<vector<int>> A = leerMatriz(ruta1, n);
@@ -66,19 +85,42 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     }
 
     cout << endl;
-    cout << "Matriz A: " << fs::path(ruta1).filename().string() << endl;
-    cout << "Matriz B: " << fs::path(ruta2).filename().string() << endl;
+    cout << "Matriz A: " << nombre1 << endl;
+    cout << "Matriz B: " << nombre2 << endl;
     cout << "Dimension: " << n << " x " << n << endl;
 
-    // Multiplicacion Naive
+    // ------------------------------------
+    // NAIVE
+    // ------------------------------------
+
+    auto inicioNaive = chrono::high_resolution_clock::now();
+
     vector<vector<int>> resultadoNaive = naiveMultiply(A, B);
 
-    cout << "Naive terminado." << endl;
+    auto finNaive = chrono::high_resolution_clock::now();
 
-    // Multiplicacion Strassen
+    chrono::duration<double> tiempoNaive = finNaive - inicioNaive;
+
+    cout << "Naive: " << tiempoNaive.count() << " segundos" << endl;
+
+    guardarTiempo(nombre1, "Naive", n, tiempoNaive.count());
+
+
+    // ------------------------------------
+    // STRASSEN
+    // ------------------------------------
+
+    auto inicioStrassen = chrono::high_resolution_clock::now();
+
     vector<vector<int>> resultadoStrassen = strassenMultiply(A, B);
 
-    cout << "Strassen terminado." << endl;
+    auto finStrassen = chrono::high_resolution_clock::now();
+
+    chrono::duration<double> tiempoStrassen = finStrassen - inicioStrassen;
+
+    cout << "Strassen: " << tiempoStrassen.count() << " segundos" << endl;
+
+    guardarTiempo(nombre1, "Strassen", n, tiempoStrassen.count());
 
     // Comparar resultados
     if (resultadoNaive == resultadoStrassen) {
