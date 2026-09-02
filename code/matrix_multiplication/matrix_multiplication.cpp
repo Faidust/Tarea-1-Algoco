@@ -3,6 +3,9 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <thread>
+#include <atomic>
+#include <functional>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -35,6 +38,61 @@ vector<vector<int>> leerMatriz(const string& nombreArchivo, int n)
     archivo.close();
 
     return matriz;
+}
+
+long obtenerMemoriaKB()
+{
+    ifstream archivo("/proc/self/status");
+
+    string palabra;
+    long memoriaKB = 0;
+
+    while (archivo >> palabra) {
+        if (palabra == "VmRSS:") {
+            archivo >> memoriaKB;
+            return memoriaKB;
+        }
+    }
+
+    return 0;
+}
+
+void monitorearMemoria(atomic<bool>& ejecutando, atomic<long>& memoriaMaximaKB)
+{
+    while (ejecutando) {
+
+        ifstream archivo("/proc/self/status");
+
+        string palabra;
+        long memoriaActualKB = 0;
+
+        while (archivo >> palabra) {
+            if (palabra == "VmRSS:") {
+                archivo >> memoriaActualKB;
+                break;
+            }
+        }
+
+        if (memoriaActualKB > memoriaMaximaKB.load()) {
+            memoriaMaximaKB = memoriaActualKB;
+        }
+
+        this_thread::sleep_for(chrono::microseconds(100));
+    }
+}
+
+void guardarMedicion(const string& archivoEntrada, const string& algoritmo, int n, double tiempo, long memoria)
+{
+    ofstream archivo("data/measurements/matrix_measurements.csv", ios::app);
+
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir archivo de mediciones." << endl;
+        return;
+    }
+
+    archivo << archivoEntrada << "," << algoritmo << "," << n << "," << tiempo << "," << memoria << "\n";
+
+    archivo.close();
 }
 
 
@@ -93,22 +151,49 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     // NAIVE
     // ------------------------------------
 
+    long memoriaInicialNaive = obtenerMemoriaKB();
+
+    atomic<bool> ejecutandoNaive = true;
+
+    atomic<long> memoriaMaximaNaive = memoriaInicialNaive;
+
+    thread hiloNaive(monitorearMemoria, ref(ejecutandoNaive), ref(memoriaMaximaNaive));
+
     auto inicioNaive = chrono::high_resolution_clock::now();
 
     vector<vector<int>> resultadoNaive = naiveMultiply(A, B);
 
     auto finNaive = chrono::high_resolution_clock::now();
 
+    ejecutandoNaive = false;
+
+    hiloNaive.join();
+
     chrono::duration<double> tiempoNaive = finNaive - inicioNaive;
 
-    cout << "Naive: " << tiempoNaive.count() << " segundos" << endl;
+    long memoriaNaive = memoriaMaximaNaive.load() - memoriaInicialNaive;
 
-    guardarTiempo(nombre1, "Naive", n, tiempoNaive.count());
+    if (memoriaNaive < 0) {
+        memoriaNaive = 0;
+    }
+
+    cout << "Naive: " << tiempoNaive.count() << " segundos" << endl;
+    cout << "Memoria: " << memoriaNaive << " KB" << endl;
+
+    guardarMedicion(nombre1, "Naive", n, tiempoNaive.count(), memoriaNaive);
 
 
     // ------------------------------------
     // STRASSEN
     // ------------------------------------
+
+    long memoriaInicialStrassen = obtenerMemoriaKB();
+
+    atomic<bool> ejecutandoStrassen = true;
+
+    atomic<long> memoriaMaximaStrassen = memoriaInicialStrassen;
+
+    thread hiloStrassen(monitorearMemoria, ref(ejecutandoStrassen), ref(memoriaMaximaStrassen));
 
     auto inicioStrassen = chrono::high_resolution_clock::now();
 
@@ -116,11 +201,22 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
 
     auto finStrassen = chrono::high_resolution_clock::now();
 
+    ejecutandoStrassen = false;
+
+    hiloStrassen.join();
+
     chrono::duration<double> tiempoStrassen = finStrassen - inicioStrassen;
 
-    cout << "Strassen: " << tiempoStrassen.count() << " segundos" << endl;
+    long memoriaStrassen = memoriaMaximaStrassen.load() - memoriaInicialStrassen;
 
-    guardarTiempo(nombre1, "Strassen", n, tiempoStrassen.count());
+    if (memoriaStrassen < 0) {
+        memoriaStrassen = 0;
+    }
+
+    cout << "Strassen: " << tiempoStrassen.count() << " segundos" << endl;
+    cout << "Memoria: " << memoriaStrassen << " KB" << endl;
+
+    guardarMedicion(nombre1, "Strassen", n, tiempoStrassen.count(), memoriaStrassen);
 
     // Comparar resultados
     if (resultadoNaive == resultadoStrassen) {
@@ -132,32 +228,17 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
-    string carpeta = "data/matrix_input";
-
-    // Recorrer todos los archivos de la carpeta
-    for (const auto& archivo : fs::directory_iterator(carpeta)) {
-
-        string nombre = archivo.path().filename().string();
-
-        // Revisar solamente archivos que terminen en _1.txt
-        if (nombre.size() >= 6 && nombre.substr(nombre.size() - 6) == "_1.txt") {
-
-            // Crear el nombre del archivo _2
-            string nombre2 = nombre;
-
-            nombre2.replace(nombre2.size() - 6, 6, "_2.txt");
-
-            string ruta1 = archivo.path().string();
-            string ruta2 = carpeta + "/" + nombre2;
-
-            // Si existe el archivo _2, procesar el par
-            if (fs::exists(ruta2)) {
-                procesarMatrices(ruta1, ruta2);
-            }
-        }
+    if (argc != 3) {
+        cerr << "Uso: ./matrix_multiplication matriz1 matriz2" << endl;
+        return 1;
     }
+
+    string ruta1 = argv[1];
+    string ruta2 = argv[2];
+
+    procesarMatrices(ruta1, ruta2);
 
     return 0;
 }
