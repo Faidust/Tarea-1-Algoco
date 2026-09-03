@@ -106,24 +106,6 @@ int obtenerDimension(const string& nombreArchivo)
     return stoi(numero);
 }
 
-// Guardar una medicion en el CSV
-void guardarTiempo(const string& archivoEntrada, const string& algoritmo, int n, double tiempo)
-{
-    ofstream archivo("data/measurements/matrix_measurements.csv", ios::app);
-
-    if (!archivo.is_open()) {
-        cerr << "Error al abrir el archivo de mediciones." << endl;
-        return;
-    }
-
-    archivo << archivoEntrada << ","
-            << algoritmo << ","
-            << n << ","
-            << tiempo << "\n";
-
-    archivo.close();
-}
-
 
 // Procesar un par de matrices
 void procesarMatrices(const string& ruta1, const string& ruta2)

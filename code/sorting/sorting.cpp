@@ -316,27 +316,16 @@ void procesarArchivo(const string& ruta)
 // MAIN
 // ------------------------------------
 
-int main()
+int main(int argc, char* argv[])
 {
-    string carpetaEntrada = "data/array_input";
-
-    ofstream archivoMediciones("data/measurements/sorting_measurements.csv");
-
-    archivoMediciones << "archivo,algoritmo,n,tiempo,memoriaKB\n";
-
-    archivoMediciones.close();
-
-    if (!fs::exists(carpetaEntrada)) {
-        cerr << "No existe la carpeta: " << carpetaEntrada << endl;
+    if (argc != 2) {
+        cerr << "Uso: ./sorting archivo" << endl;
         return 1;
     }
 
-    for (const auto& archivo : fs::directory_iterator(carpetaEntrada)) {
+    string ruta = argv[1];
 
-        if (archivo.path().extension() == ".txt") {
-            procesarArchivo(archivo.path().string());
-        }
-    }
+    procesarArchivo(ruta);
 
     return 0;
 }
