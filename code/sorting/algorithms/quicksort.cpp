@@ -11,7 +11,12 @@ using namespace std;
 
 int partition(vector<int>& vec, int low, int high)
 {
-    // Se usa el ultimo elemento como pivote
+    // Se usa el elemento del medio como pivote
+    int medio = low + (high - low) / 2;
+
+    // Se mueve el pivote al final
+    swap(vec[medio], vec[high]);
+
     int pivot = vec[high];
 
     // i indica hasta donde llegan los elementos
