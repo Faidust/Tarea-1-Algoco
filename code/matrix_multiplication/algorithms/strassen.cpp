@@ -2,9 +2,9 @@
 
 using namespace std;
 
-// Fuente consultada:
-// Agrega aqui la URL exacta de donde obtuviste
-// la implementacion del algoritmo de Strassen.
+// Fuente utilizada (con ciertas modificaciones para la implementarlo en la tarea):
+// Github - Strassen Matrix Multiplication
+// https://github.com/dmonaldo/strassen-matrix-multiplication
 
 
 // Suma dos matrices

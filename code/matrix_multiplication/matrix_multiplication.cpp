@@ -57,6 +57,7 @@ long obtenerMemoriaKB()
     return 0;
 }
 
+// Revisa cuanta memoria esta usando el proceso mientras corre un algoritmo
 void monitorearMemoria(atomic<bool>& ejecutando, atomic<long>& memoriaMaximaKB)
 {
     while (ejecutando) {
@@ -81,6 +82,7 @@ void monitorearMemoria(atomic<bool>& ejecutando, atomic<long>& memoriaMaximaKB)
     }
 }
 
+// Guarda las mediciones de los algoritmos en un archivo csv
 void guardarMedicion(const string& archivoEntrada, const string& algoritmo, int n, double tiempo, long memoria)
 {
     ofstream archivo("data/measurements/matrix_measurements.csv", ios::app);
@@ -129,9 +131,7 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     cout << "Matriz B: " << nombre2 << endl;
     cout << "Dimension: " << n << " x " << n << endl;
 
-    // ------------------------------------
     // NAIVE
-    // ------------------------------------
 
     long memoriaInicialNaive = obtenerMemoriaKB();
 
@@ -165,9 +165,8 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     guardarMedicion(nombre1, "Naive", n, tiempoNaive.count(), memoriaNaive);
 
 
-    // ------------------------------------
+
     // STRASSEN
-    // ------------------------------------
 
     long memoriaInicialStrassen = obtenerMemoriaKB();
 
@@ -209,7 +208,7 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     }
 }
 
-
+// El main se hizo pasando estos parametros y de esta forma para que al leer cada archivo, la memoria se reinicie y asi no acumule o guarde memoria de los archvios pasados.
 int main(int argc, char* argv[])
 {
     if (argc != 3) {

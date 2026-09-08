@@ -3,9 +3,9 @@
 
 using namespace std;
 
-// Fuente consultada:
+// Fuente utilizada (con ciertas modificaciones para la implementarlo en la tarea):
 // GeeksforGeeks - Patience Sorting
-// Agrega aquí el link exacto desde donde obtuviste la implementación.
+// https://www.geeksforgeeks.org/dsa/patience-sorting/
 
 vector<int> merge_piles(vector<vector<int>>& piles)
 {

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Fuente consultada:
+// Fuente utilizada (con ciertas modificaciones para la implementarlo en la tarea):
 // GeeksforGeeks - Merge Sort
 // https://www.geeksforgeeks.org/dsa/merge-sort/
 

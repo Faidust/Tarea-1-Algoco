@@ -2,9 +2,9 @@
 
 using namespace std;
 
-// Fuente consultada:
-// Agrega aquí la URL exacta de donde obtuviste la implementación
-// de multiplicación de matrices Naive.
+// Fuente utilizada (con ciertas modificaciones para la implementarlo en la tarea):
+// GeeksforGeeks - matrix multiplication
+// https://www.geeksforgeeks.org/cpp/cpp-matrix-multiplication/
 
 vector<vector<int>> naiveMultiply(const vector<vector<int>>& A, const vector<vector<int>>& B)
 {

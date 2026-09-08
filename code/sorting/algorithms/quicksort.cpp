@@ -3,11 +3,9 @@
 
 using namespace std;
 
-// Agrega aquí la fuente de donde obtuviste el algoritmo.
-// Ejemplo:
-// Fuente consultada:
-// GeeksforGeeks - Quick Sort
-// URL: ...
+// Fuente utilizada (con ciertas modificaciones para la implementarlo en la tarea):
+// GeeksforGeeks - Quick Sorting
+// https://www.geeksforgeeks.org/cpp/cpp-program-for-quicksort/
 
 int partition(vector<int>& vec, int low, int high)
 {

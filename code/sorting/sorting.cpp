@@ -128,10 +128,8 @@ void mostrarArreglo(const vector<int>& arr)
     cout << endl;
 }
 
-// ------------------------------------
-// PROCESAR UN CASO DE PRUEBA
-// ------------------------------------
 
+// PROCESAR UN CASO DE PRUEBA
 void procesarArchivo(const string& ruta)
 {
     vector<int> arr = leerArreglo(ruta);
@@ -147,9 +145,7 @@ void procesarArchivo(const string& ruta)
     cout << "========================================" << endl;
 
 
-    // ------------------------------------
     // PATIENCE SORT
-    // ------------------------------------
 
     vector<int> arrPatience = arr;
 
@@ -186,9 +182,7 @@ void procesarArchivo(const string& ruta)
 
 
 
-    // ------------------------------------
     // QUICK SORT
-    // ------------------------------------
 
     vector<int> arrQuick = arr;
 
@@ -223,9 +217,8 @@ void procesarArchivo(const string& ruta)
 
     guardarMedicion(fs::path(ruta).filename().string(), "QuickSort", arr.size(), tiempoQuick.count(), memoriaQuick);
 
-    // ------------------------------------
+    
     // MERGE SORT
-    // ------------------------------------
 
     vector<int> arrMerge = arr;
 
@@ -261,9 +254,7 @@ void procesarArchivo(const string& ruta)
     guardarMedicion(fs::path(ruta).filename().string(), "MergeSort", arr.size(), tiempoMerge.count(), memoriaMerge);
 
 
-    // ------------------------------------
     // STD::SORT
-    // ------------------------------------
 
     vector<int> arrSort = arr;
 
@@ -299,9 +290,8 @@ void procesarArchivo(const string& ruta)
     guardarMedicion(fs::path(ruta).filename().string(), "Sort", arr.size(), tiempoSort.count(), memoriaSort);
 
 
-    // ------------------------------------
+
     // COMPROBAR RESULTADOS
-    // ------------------------------------
 
     if (resultadoPatience == arrQuick && arrQuick == arrMerge && arrMerge == resultadoSort) {
 
@@ -312,10 +302,7 @@ void procesarArchivo(const string& ruta)
     }
 }
 
-// ------------------------------------
-// MAIN
-// ------------------------------------
-
+// El main se hizo pasando estos parametros y de esta forma para que al leer cada archivo, la memoria se reinicie y asi no acumule o guarde memoria de los archvios pasados.
 int main(int argc, char* argv[])
 {
     if (argc != 2) {
