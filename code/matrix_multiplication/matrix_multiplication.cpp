@@ -40,6 +40,30 @@ vector<vector<int>> leerMatriz(const string& nombreArchivo, int n)
     return matriz;
 }
 
+// Genera los archivos output
+void guardarSalidaMatriz(const string& rutaEntrada, const vector<vector<int>>& matriz)
+{
+    string nombre = rutaEntrada.substr(rutaEntrada.find_last_of("/") + 1);
+
+    // Quitar "_1.txt"
+    nombre = nombre.substr(0, nombre.size() - 6);
+
+    // Agregar "_out.txt"
+    nombre += "_out.txt";
+
+    ofstream salida("data/matrix_output/" + nombre);
+
+    for (int i = 0; i < matriz.size(); i++) {
+        for (int j = 0; j < matriz[i].size(); j++) {
+            salida << matriz[i][j] << " ";
+        }
+
+        salida << endl;
+    }
+
+    salida.close();
+}
+
 long obtenerMemoriaKB()
 {
     ifstream archivo("/proc/self/status");
@@ -202,6 +226,7 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     // Comparar resultados
     if (resultadoNaive == resultadoStrassen) {
         cout << "Naive y Strassen dieron el mismo resultado." << endl;
+        guardarSalidaMatriz(ruta1, resultadoNaive);
     }
     else {
         cout << "ERROR: dieron resultados distintos." << endl;

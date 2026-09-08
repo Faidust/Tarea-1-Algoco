@@ -36,6 +36,25 @@ void guardarTiempo(const string& archivoEntrada, const string& algoritmo, int n,
     archivo << archivoEntrada << "," << algoritmo << "," << n << "," << tiempo << "\n";
 }
 
+// Genera los archivos output
+void guardarSalidaSorting(const string& rutaEntrada, const vector<int>& arreglo)
+{
+    string nombre = rutaEntrada.substr(rutaEntrada.find_last_of("/") + 1);
+
+    nombre = nombre.substr(0, nombre.size() - 4);
+
+    nombre += "_out.txt";
+
+    ofstream salida("data/array_output/" + nombre);
+
+    for (int numero : arreglo) {
+        salida << numero << " ";
+    }
+
+    salida << endl;
+    salida.close();
+}
+
 long obtenerMemoriaKB()
 {
     ifstream archivo("/proc/self/status");
@@ -296,6 +315,7 @@ void procesarArchivo(const string& ruta)
     if (resultadoPatience == arrQuick && arrQuick == arrMerge && arrMerge == resultadoSort) {
 
         cout << "Todos los algoritmos dieron el mismo resultado." << endl;
+        guardarSalidaSorting(ruta, arrMerge);
     }
     else {
         cout << "ERROR: Los algoritmos dieron resultados diferentes." << endl;
