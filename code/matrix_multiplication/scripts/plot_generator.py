@@ -56,9 +56,7 @@ for tipo in tipos:
         )[["tiempo", "memoriaKB"]].mean().reset_index()
 
 
-        # -----------------------------
         # GRAFICO DE TIEMPO
-        # -----------------------------
 
         plt.figure()
 
@@ -94,9 +92,7 @@ for tipo in tipos:
         plt.close()
 
 
-        # -----------------------------
         # GRAFICO DE MEMORIA
-        # -----------------------------
 
         plt.figure()
 

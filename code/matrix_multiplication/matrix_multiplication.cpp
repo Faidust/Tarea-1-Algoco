@@ -22,11 +22,6 @@ vector<vector<int>> leerMatriz(const string& nombreArchivo, int n)
 {
     ifstream archivo(nombreArchivo);
 
-    if (!archivo.is_open()) {
-        cerr << "Error al abrir " << nombreArchivo << endl;
-        return {};
-    }
-
     vector<vector<int>> matriz(n, vector<int>(n));
 
     for (int i = 0; i < n; i++) {
@@ -111,11 +106,6 @@ void guardarMedicion(const string& archivoEntrada, const string& algoritmo, int 
 {
     ofstream archivo("data/measurements/matrix_measurements.csv", ios::app);
 
-    if (!archivo.is_open()) {
-        cerr << "Error al abrir archivo de mediciones." << endl;
-        return;
-    }
-
     archivo << archivoEntrada << "," << algoritmo << "," << n << "," << tiempo << "," << memoria << "\n";
 
     archivo.close();
@@ -145,10 +135,6 @@ void procesarMatrices(const string& ruta1, const string& ruta2)
     vector<vector<int>> A = leerMatriz(ruta1, n);
     vector<vector<int>> B = leerMatriz(ruta2, n);
 
-    if (A.empty() || B.empty()) {
-        cerr << "Error al leer las matrices." << endl;
-        return;
-    }
 
     cout << endl;
     cout << "Matriz A: " << nombre1 << endl;

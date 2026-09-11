@@ -28,11 +28,6 @@ void guardarTiempo(const string& archivoEntrada, const string& algoritmo, int n,
 {
     ofstream archivo("data/measurements/sorting_measurements.csv", ios::app);
 
-    if (!archivo.is_open()) {
-        cerr << "Error al abrir archivo de mediciones." << endl;
-        return;
-    }
-
     archivo << archivoEntrada << "," << algoritmo << "," << n << "," << tiempo << "\n";
 }
 
@@ -76,11 +71,6 @@ void guardarMedicion(const string& archivoEntrada, const string& algoritmo, int 
 {
     ofstream archivo("data/measurements/sorting_measurements.csv", ios::app);
 
-    if (!archivo.is_open()) {
-        cerr << "Error al abrir el archivo de mediciones." << endl;
-        return;
-    }
-
     archivo << archivoEntrada << ","
             << algoritmo << ","
             << n << ","
@@ -119,11 +109,6 @@ vector<int> leerArreglo(const string& nombreArchivo)
 {
     ifstream archivo(nombreArchivo);
 
-    if (!archivo.is_open()) {
-        cerr << "Error: no se pudo abrir el archivo." << endl;
-        return {};
-    }
-
     vector<int> arr;
     int numero;
 
@@ -152,11 +137,6 @@ void mostrarArreglo(const vector<int>& arr)
 void procesarArchivo(const string& ruta)
 {
     vector<int> arr = leerArreglo(ruta);
-
-    if (arr.empty()) {
-        cerr << "No se pudo procesar: " << ruta << endl;
-        return;
-    }
 
     cout << "\n========================================" << endl;
     cout << "Archivo: " << fs::path(ruta).filename().string() << endl;
