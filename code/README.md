@@ -56,3 +56,7 @@ Para generar las matrices de prueba se debe ejecutar "make generate" desde /code
 Para compilar y ejecutar los algoritmos de multiplicación de matrices se utiliza "make" desde /code/matrix_multiplication.
 
 Para generar los gráficos de tiempo y memoria se debe ingresar a la carpeta "scripts" desde /code/matrix_multiplication y ejecutar "python3 plot_generator.py".
+
+## Repositorio de github
+
+https://github.com/Faidust/Tarea-1-Algoco
