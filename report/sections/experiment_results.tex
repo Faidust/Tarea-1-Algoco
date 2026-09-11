@@ -11,13 +11,13 @@ Al ejecutar los algoritmos de ordenamiento con un dominio D7 y ordenado de forma
 
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/tiempo_aleatorio_D7.png}
+        \includegraphics[width=0.85\textwidth]{figures/tiempo_aleatorio_D7.png}
         \caption*{Tiempo de ejecución}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/memoria_aleatorio_D7.png}
+        \includegraphics[width=0.85\textwidth]{figures/memoria_aleatorio_D7.png}
         \caption*{Memoria utilizada}
     \end{minipage}
 
@@ -27,7 +27,7 @@ Al ejecutar los algoritmos de ordenamiento con un dominio D7 y ordenado de forma
 
 En la Figura 1 se observa que Patience Sort presenta el mayor crecimiento temporal, alcanzando aproximadamente $0,78$ s para $n=10^5$, esto se debe a que su implementación puede aproximarse a $O(n^2)$, ya que para decidir en qué pila insertar cada elemento, se recorren linealmente las pilas existentes y luego, durante el proceso de reconstrucción del arreglo ordenado a partir de las pilas, se vuelve a buscar repetidamente el menor elemento entre los topes de las pilas. En cambio, Merge Sort, Quick Sort y Sort mantienen tiempos considerablemente menores: Merge Sort divide siempre el arreglo en mitades, Quick Sort obtiene particiones relativamente balanceadas en este caso por como se colocó el pivote, y Sort utiliza una implementación optimizada, por lo que los tiempos promedios de estos 3 algoritmos se mantienen cercanos a un comportamiento de $O(n\log n)$.
 
-Con respecto a la memoria, Patience Sort también presenta el mayor consumo debido a la utilización de múltiples pilas, ya que debe mantener guardados los elementos distribuidos usando una estructura de tipo \verb|vector<vector<int>>|, teniendo una complejidad espacial $O(n)$. Merge Sort también utiliza $O(n)$ debido a los arreglos auxiliares que crea para almacenar de forma temporal las mitades durante el proceso de mezcla. En el caso de Quick Sort, este trabaja principalmente sobre el mismo arreglo, por lo que su memoria adicional proviene en mayor parte de las llamadas recursivas, siendo aproximadamente $O(\log n)$ cuando las particiones se mantienen balanceadas. Finalmente, Sort también trabaja principalmente sobre el mismo arreglo y utiliza una cantidad escasa de memoria auxiliar, por lo que el consumo observado en estos 2 ultimos algortimos es menor en comparación con Patience Sort y Merge Sort.
+Con respecto a la memoria, Patience Sort también presenta el mayor consumo debido a la utilización de múltiples pilas, ya que debe mantener guardados los elementos distribuidos usando una estructura de tipo \verb|vector<vector<int>>|, teniendo una complejidad espacial $O(n)$. Merge Sort también utiliza $O(n)$ debido a los arreglos auxiliares que crea para almacenar de forma temporal las mitades durante el proceso de mezcla. En el caso de Quick Sort, este trabaja principalmente sobre el mismo arreglo, pero a pesar de esto no es estrictamente in-place, debido a la memoria adicional proveniente en mayor parte de las llamadas recursivas (almacenando cosas como parámetros, la variable pivote, entre otros elementos), siendo aproximadamente $O(\log n)$ cuando las particiones se mantienen balanceadas. Finalmente, Sort también trabaja principalmente sobre el mismo arreglo y utiliza una cantidad escasa de memoria auxiliar, por lo que el consumo observado en estos 2 ultimos algortimos es menor en comparación con Patience Sort y Merge Sort.
 
 Ahora, si vemos los gráficos de memoria vs n y tiempo vs n con arreglo aleatorio pero con dominio D1, se puede observar lo siguiente:
 
@@ -36,13 +36,13 @@ Ahora, si vemos los gráficos de memoria vs n y tiempo vs n con arreglo aleatori
 
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/tiempo_aleatorio_D1.png}
+        \includegraphics[width=0.85\textwidth]{figures/tiempo_aleatorio_D1.png}
         \caption*{Tiempo de ejecución}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/memoria_aleatorio_D1.png}
+        \includegraphics[width=0.85\textwidth]{figures/memoria_aleatorio_D1.png}
         \caption*{Memoria utilizada}
     \end{minipage}
 
@@ -63,13 +63,13 @@ Al comparar los arreglos ascendentes y descendentes, se obtuvieron los siguiente
 
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/tiempo_ascendente_D7.png}
+        \includegraphics[width=0.85\textwidth]{figures/tiempo_ascendente_D7.png}
         \caption*{Tiempo de ejecución}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/memoria_ascendente_D7.png}
+        \includegraphics[width=0.85\textwidth]{figures/memoria_ascendente_D7.png}
         \caption*{Memoria utilizada}
     \end{minipage}
 
@@ -82,13 +82,13 @@ Al comparar los arreglos ascendentes y descendentes, se obtuvieron los siguiente
 
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/tiempo_descendente_D7.png}
+        \includegraphics[width=0.85\textwidth]{figures/tiempo_descendente_D7.png}
         \caption*{Tiempo de ejecución}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/memoria_descendente_D7.png}
+        \includegraphics[width=0.85\textwidth]{figures/memoria_descendente_D7.png}
         \caption*{Memoria utilizada}
     \end{minipage}
 
@@ -113,13 +113,13 @@ Se realizará un análisis unicamente de matrices densas con dominio D10, esto y
 
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/tiempo_densa_D10.png}
+        \includegraphics[width=0.85\textwidth]{figures/tiempo_densa_D10.png}
         \caption*{Tiempo de ejecución}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/memoria_densa_D10.png}
+        \includegraphics[width=0.85\textwidth]{figures/memoria_densa_D10.png}
         \caption*{Memoria utilizada}
     \end{minipage}
 
@@ -127,7 +127,7 @@ Se realizará un análisis unicamente de matrices densas con dominio D10, esto y
     \label{fig:comparacion_sorting}
 \end{figure}
 
-En la figura 5 se ve que aunque Strassen posee una complejidad temporal teórica de $O(n^{2.807})$, menor que el $O(n^3)$ del método Naive, en los tamaños evaluados presenta tiempos bastante mayores. Esto se debe al costo práctico de las llamadas recursivas y de la creación de numerosas matrices auxiliares. Por lo que, para estos tamaños, la ventaja asintótica de Strassen todavía no compensa ese costo adicional.
+En la figura 5 se ve que aunque Strassen posee una complejidad temporal teórica de $O(n^{2.807})$, menor que el $O(n^3)$ del método Naive, esta disminición se debe a que en la ecuación de recurrencia del método Strassen, se logra reducir de 8 a 7 subproblemas de multiplicación de matrices. A pesar de esto, en los tamaños evaluados Strassen presenta tiempos bastante mayores. Esto se debe al costo práctico de las llamadas recursivas y de la creación de numerosas matrices auxiliares. Por lo que, para estos tamaños, la ventaja asintótica de Strassen todavía no compensa ese costo adicional.
 
 Con respecto a la memoria, ambos algoritmos presentan un crecimiento de orden $O(n^2)$, pero Strassen utiliza más memoria debido a las submatrices y estructuras auxiliares creadas durante la recursión.
 
